@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addTodo } from "../redux/todoSlice";
 
 const AddTodoForm = () => {
+  const dispatch = useDispatch();
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [deadLine, setDeadLine] = useState("");
@@ -18,6 +22,19 @@ const AddTodoForm = () => {
     console.log("status: " + status);
     console.log("startDate: " + startDate);
     console.log("responsiblePerson: " + responsiblePerson);
+
+    // dispatch event to redux
+    dispatch(
+      addTodo({
+        title,
+        description,
+        deadLine,
+        priority,
+        status,
+        startDate,
+        responsiblePerson,
+      })
+    );
   };
 
   return (
