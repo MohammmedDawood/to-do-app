@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteTodo, changeStatus } from "../redux/todoSlice";
+import { deleteTodoAsync, changeStatusTodoAsync } from "../redux/todoSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrash,
@@ -15,7 +15,7 @@ const TodoItem = ({ todo }) => {
     console.log(todo.id);
     // dispatch event to redux
     dispatch(
-      deleteTodo({
+      deleteTodoAsync({
         id: todo.id,
       })
     );
@@ -25,7 +25,7 @@ const TodoItem = ({ todo }) => {
     console.log(todo.id);
     // dispatch event to redux
     dispatch(
-      changeStatus({
+      changeStatusTodoAsync({
         id: todo.id,
         status: statusvalue,
       })
@@ -36,20 +36,18 @@ const TodoItem = ({ todo }) => {
   return (
     <li className="list-group-item">
       {/* Todo Header */}
-      <div className="d-flex justify-content-between">
-        <span className="d-flex align-items-center  m-1">
+      <div className="d-flex justify-content-between row">
+        <div className="d-flex align-items-center  m-1  col-sm-12 col-md-3 col-lg-3">
           <b>
             <h1>{todo.title}</h1>
           </b>
-        </span>
-
-        <span className="d-flex align-items-center">
+        </div>
+        <div className="d-flex align-items-center  col-sm-12 col-md-3 col-lg-3">
           <select
             className="form-select mr-sm-1"
             defaultValue={todo.status}
             onChange={(event) => ChangeStatusTodobtn(event.target.value)}
           >
-            <option>Choose Status...</option>
             <option>To Do</option>
             <option>In Progress</option>
             <option>Done</option>
@@ -71,7 +69,7 @@ const TodoItem = ({ todo }) => {
           >
             <FontAwesomeIcon icon={faTrash} />
           </button>
-        </span>
+        </div>
       </div>
       {/* to do Description */}
       {showTodoInfo && (

@@ -15,10 +15,10 @@ const App = () => {
         </span>
         <span className="d-flex align-items-center">
           <button
-            className="btn btn-primary"
+            className={showForm ? "btn btn-danger" : "btn btn-success"}
             onClick={() => setShowForm(!showForm)}
           >
-            {showForm ? "close" : "Add a todo"}
+            {showForm ? "Close" : "Add a todo"}
           </button>
         </span>
       </div>

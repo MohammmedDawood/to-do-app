@@ -1,39 +1,66 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+export const getTodosAsync = createAsyncThunk(
+  "todo/getTodosAsync",
+  async () => {
+    const response = await fetch("http://localhost:7000/todos");
+    if (response.status === 200) {
+      const todos = await response.json();
+      return { todos };
+    }
+  }
+);
+export const addTodoAsync = createAsyncThunk(
+  "todo/addTodoAsync",
+  async (payload) => {
+    const response = await fetch("http://localhost:7000/todos", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    if (response.status === 200) {
+      console.log(payload);
+      const todos = await response.json();
+      return { todos };
+    }
+  }
+);
+export const changeStatusTodoAsync = createAsyncThunk(
+  "todo/changeStatusTodoAsync",
+  async (payload) => {
+    const response = await fetch(`http://localhost:7000/todos/${payload.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status: payload.status }),
+    });
+    if (response.status === 200) {
+      console.log(payload);
+      const todos = await response.json();
+      return { todos };
+    }
+  }
+);
+export const deleteTodoAsync = createAsyncThunk(
+  "todo/deleteTodoAsync",
+  async (payload) => {
+    const response = await fetch(`http://localhost:7000/todos/${payload.id}`, {
+      method: "DELETE",
+    });
+    if (response.status === 200) {
+      console.log(payload);
+      const todos = await response.json();
+      return { todos };
+    }
+  }
+);
 
 const todoSlice = createSlice({
   name: "todos",
-  initialState: [
-    {
-      id: 1,
-      title: "todo1",
-      description: "create react project",
-      deadLine: "2021-11-08",
-      priority: "High",
-      status: "In Progress",
-      startDate: "2021-11-24",
-      responsiblePerson: "Mohammed",
-    },
-    {
-      id: 2,
-      title: "todo2",
-      description: "create react project",
-      deadLine: "2021-11-08",
-      priority: "High",
-      status: "To Do",
-      startDate: "2021-11-24",
-      responsiblePerson: "Mohammed",
-    },
-    {
-      id: 3,
-      title: "todo3",
-      description: "create react project",
-      deadLine: "2021-11-08",
-      priority: "High",
-      status: "Done",
-      startDate: "2021-11-24",
-      responsiblePerson: "Ahmed",
-    },
-  ],
+  initialState: [],
   //define actions(reducer)
   reducers: {
     //Add new to to do where the action type and payload comes from the component
@@ -62,10 +89,36 @@ const todoSlice = createSlice({
       return state.filter((todo) => todo.id !== action.payload.id);
     },
   },
+  // specify additional reducers for thunk apis
+  extraReducers: {
+    [getTodosAsync.fulfilled]: (state, action) => {
+      console.log("data Fetched successfully!");
+      return action.payload.todos;
+    },
+    [addTodoAsync.fulfilled]: (state, action) => {
+      console.log("data Added successfully!");
+      state.push(action.payload.todos);
+    },
+    [changeStatusTodoAsync.fulfilled]: (state, action) => {
+      console.log("data Status Changed successfully successfully!");
+      const index = state.findIndex((todo) => {
+        // console.log(action.payload.todos.id);
+        // console.log(todo.id);
+        return todo.id === action.payload.todos.id;
+      });
+      // console.log(index);
+      state[index].status = action.payload.todos.status;
+    },
+    [deleteTodoAsync.fulfilled]: (state, action) => {
+      console.log("data Deleted successfully successfully!");
+      return state.filter((todo) => todo.id !== action.payload.id);
+    },
+  },
 });
 
 //export addTodo action
-export const { addTodo, deleteTodo, changeStatus } = todoSlice.actions;
+export const { addTodo, deleteTodo, changeStatus, filterByStatus } =
+  todoSlice.actions;
 
 //export reducer
 export default todoSlice.reducer;
