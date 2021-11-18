@@ -52,8 +52,7 @@ export const deleteTodoAsync = createAsyncThunk(
     });
     if (response.status === 200) {
       console.log(payload);
-      const todos = await response.json();
-      return { todos };
+      return { id: payload.id };
     }
   }
 );
@@ -111,14 +110,16 @@ const todoSlice = createSlice({
     },
     [deleteTodoAsync.fulfilled]: (state, action) => {
       console.log("data Deleted successfully successfully!");
+      // console.log(todo.id);
+      // console.log(action.payload.id);
+      console.log((todo) => todo.id !== action.payload.id);
       return state.filter((todo) => todo.id !== action.payload.id);
     },
   },
 });
 
 //export addTodo action
-export const { addTodo, deleteTodo, changeStatus, filterByStatus } =
-  todoSlice.actions;
+export const { addTodo, deleteTodo, changeStatus } = todoSlice.actions;
 
 //export reducer
 export default todoSlice.reducer;
