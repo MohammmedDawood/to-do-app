@@ -8,8 +8,8 @@ const todoSlice = createSlice({
       title: "todo1",
       description: "create react project",
       deadLine: "2021-11-08",
-      priority: "high",
-      status: "toDo",
+      priority: "High",
+      status: "In Progress",
       startDate: "2021-11-24",
       responsiblePerson: "Mohammed",
     },
@@ -18,8 +18,8 @@ const todoSlice = createSlice({
       title: "todo2",
       description: "create react project",
       deadLine: "2021-11-08",
-      priority: "high",
-      status: "toDo",
+      priority: "High",
+      status: "To Do",
       startDate: "2021-11-24",
       responsiblePerson: "Mohammed",
     },
@@ -28,8 +28,8 @@ const todoSlice = createSlice({
       title: "todo3",
       description: "create react project",
       deadLine: "2021-11-08",
-      priority: "high",
-      status: "toDo",
+      priority: "High",
+      status: "Done",
       startDate: "2021-11-24",
       responsiblePerson: "Ahmed",
     },
@@ -49,15 +49,23 @@ const todoSlice = createSlice({
         startDate: action.payload.startDate,
         responsiblePerson: action.payload.responsiblePerson,
       };
-      console.log(newTodo);
+      //   console.log(newTodo);
       state.push(newTodo);
-      console.log(state);
+      //   console.log(state);
+    },
+    changeStatus: (state, action) => {
+      const index = state.findIndex((todo) => todo.id === action.payload.id);
+      state[index].status = action.payload.status;
+    },
+    deleteTodo: (state, action) => {
+      // deleteTodo is the action
+      return state.filter((todo) => todo.id !== action.payload.id);
     },
   },
 });
 
 //export addTodo action
-export const { addTodo } = todoSlice.actions;
+export const { addTodo, deleteTodo, changeStatus } = todoSlice.actions;
 
 //export reducer
 export default todoSlice.reducer;

@@ -1,8 +1,37 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { deleteTodo, changeStatus } from "../redux/todoSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faArrowCircleDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrash,
+  faArrowCircleDown,
+  faArrowCircleUp,
+} from "@fortawesome/free-solid-svg-icons";
 
 const TodoItem = ({ todo }) => {
+  const dispatch = useDispatch();
+  const deleteTodobtn = () => {
+    console.log("delete");
+    console.log(todo.id);
+    // dispatch event to redux
+    dispatch(
+      deleteTodo({
+        id: todo.id,
+      })
+    );
+  };
+  const ChangeStatusTodobtn = (statusvalue) => {
+    console.log("Change Status");
+    console.log(todo.id);
+    // dispatch event to redux
+    dispatch(
+      changeStatus({
+        id: todo.id,
+        status: statusvalue,
+      })
+    );
+  };
+
   const [showTodoInfo, setShowTodoInfo] = useState(false);
   return (
     <li className="list-group-item">
@@ -13,14 +42,33 @@ const TodoItem = ({ todo }) => {
             <h1>{todo.title}</h1>
           </b>
         </span>
+
         <span className="d-flex align-items-center">
+          <select
+            className="form-select mr-sm-1"
+            defaultValue={todo.status}
+            onChange={(event) => ChangeStatusTodobtn(event.target.value)}
+          >
+            <option>Choose Status...</option>
+            <option>To Do</option>
+            <option>In Progress</option>
+            <option>Done</option>
+          </select>
           <button
-            className="btn btn-success m-1"
+            className={
+              showTodoInfo ? "btn btn-danger m-1" : "btn btn-success m-1"
+            }
             onClick={() => setShowTodoInfo(!showTodoInfo)}
           >
-            <FontAwesomeIcon icon={faArrowCircleDown} />
+            <FontAwesomeIcon
+              icon={showTodoInfo ? faArrowCircleUp : faArrowCircleDown}
+            />
           </button>
-          <button className="btn btn-danger m-1">
+          <button
+            id={todo.id}
+            className="btn btn-danger m-1"
+            onClick={() => deleteTodobtn()}
+          >
             <FontAwesomeIcon icon={faTrash} />
           </button>
         </span>
@@ -29,12 +77,22 @@ const TodoItem = ({ todo }) => {
       {showTodoInfo && (
         <div className="card">
           <div className="card-body">
-            <h5 className="card-title">{todo.responsiblePerson}</h5>
-            <h6 className="card-subtitle mb-2 text-muted">{todo.status}</h6>
-            <h6 className="card-subtitle mb-2 text-muted">{todo.priority}</h6>
-            <h6 className="card-subtitle mb-2 text-muted">{todo.startDate}</h6>
-            <h6 className="card-subtitle mb-2 text-muted">{todo.deadLine}</h6>
-            <p className="card-text">{todo.description}</p>
+            <h5 className="card-title">
+              Responsible Person: {todo.responsiblePerson}
+            </h5>
+            <h6 className="card-subtitle mb-2 text-muted">
+              Status: {todo.status}
+            </h6>
+            <h6 className="card-subtitle mb-2 text-muted">
+              Priority: {todo.priority}
+            </h6>
+            <h6 className="card-subtitle mb-2 text-muted">
+              Start Date: {todo.startDate}
+            </h6>
+            <h6 className="card-subtitle mb-2 text-muted">
+              Deadline: {todo.deadLine}
+            </h6>
+            <p className="card-text">Description: {todo.description}</p>
           </div>
         </div>
       )}
