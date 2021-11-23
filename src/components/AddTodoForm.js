@@ -15,13 +15,13 @@ const AddTodoForm = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log("title: " + title);
-    console.log("description: " + description);
-    console.log("deadLine: " + deadLine);
-    console.log("priority: " + priority);
-    console.log("status: " + status);
-    console.log("startDate: " + startDate);
-    console.log("responsiblePerson: " + responsiblePerson);
+    // console.log("title: " + title);
+    // console.log("description: " + description);
+    // console.log("deadLine: " + deadLine);
+    // console.log("priority: " + priority);
+    // console.log("status: " + status);
+    // console.log("startDate: " + startDate);
+    // console.log("responsiblePerson: " + responsiblePerson);
 
     // dispatch event to redux
     dispatch(
@@ -35,6 +35,15 @@ const AddTodoForm = () => {
         responsiblePerson,
       })
     );
+
+    // reset form
+    setTitle("");
+    setDescription("");
+    setDeadLine("");
+    setPriority("");
+    setStatus("");
+    setStartDate("");
+    setResponsiblePerson("");
   };
 
   return (

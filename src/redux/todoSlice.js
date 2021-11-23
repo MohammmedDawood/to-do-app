@@ -3,7 +3,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const getTodosAsync = createAsyncThunk(
   "todo/getTodosAsync",
   async () => {
-    const response = await fetch("http://localhost:7000/todos");
+    const response = await fetch(
+      "https://todo-app-react-travolic.herokuapp.com/todos"
+    );
     if (response.status === 200) {
       const todos = await response.json();
       return { todos };
@@ -13,13 +15,16 @@ export const getTodosAsync = createAsyncThunk(
 export const addTodoAsync = createAsyncThunk(
   "todo/addTodoAsync",
   async (payload) => {
-    const response = await fetch("http://localhost:7000/todos", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+    const response = await fetch(
+      "https://todo-app-react-travolic.herokuapp.com/todos",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    );
     if (response.status === 200) {
       console.log(payload);
       const todos = await response.json();
@@ -30,13 +35,16 @@ export const addTodoAsync = createAsyncThunk(
 export const changeStatusTodoAsync = createAsyncThunk(
   "todo/changeStatusTodoAsync",
   async (payload) => {
-    const response = await fetch(`http://localhost:7000/todos/${payload.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ status: payload.status }),
-    });
+    const response = await fetch(
+      `https://todo-app-react-travolic.herokuapp.com/todos/${payload.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: payload.status }),
+      }
+    );
     if (response.status === 200) {
       console.log(payload);
       const todos = await response.json();
@@ -47,9 +55,12 @@ export const changeStatusTodoAsync = createAsyncThunk(
 export const deleteTodoAsync = createAsyncThunk(
   "todo/deleteTodoAsync",
   async (payload) => {
-    const response = await fetch(`http://localhost:7000/todos/${payload.id}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `https://todo-app-react-travolic.herokuapp.com/todos/${payload.id}`,
+      {
+        method: "DELETE",
+      }
+    );
     if (response.status === 200) {
       console.log(payload);
       return { id: payload.id };
